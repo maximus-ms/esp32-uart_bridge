@@ -1,0 +1,152 @@
+menu "UART Bridge Configuration"
+
+    menu "WiFi Settings"
+        config BRIDGE_WIFI_SSID
+            string "WiFi SSID"
+            default "myssid"
+
+        config BRIDGE_WIFI_PASSWORD
+            string "WiFi Password"
+            default "mypassword"
+
+        config BRIDGE_WIFI_MAX_RETRY
+            int "Max reconnect retries (0 = infinite)"
+            default 0
+            range 0 255
+
+        config BRIDGE_WIFI_REBOOT_TIMEOUT
+            int "Reboot after WiFi down (minutes, 0 = disable)"
+            default 5
+            range 0 60
+            help
+                If WiFi stays disconnected for this many minutes,
+                the device will automatically reboot.
+                Set to 0 to disable.
+
+        config BRIDGE_WIFI_TX_POWER
+            int "WiFi TX power (2-60, in 0.25 dBm units)"
+            default 34
+            range 2 60
+            help
+                WiFi transmit power in 0.25 dBm steps.
+                60 = 15 dBm (max), 52 = 13 dBm, 44 = 11 dBm,
+                34 = 8.5 dBm, 20 = 5 dBm, 8 = 2 dBm.
+
+        config BRIDGE_STATIC_IP
+            string "Static IP (empty = DHCP)"
+            default ""
+            help
+                Leave empty for DHCP. Example: 192.168.1.50
+
+        config BRIDGE_STATIC_GW
+            string "Gateway"
+            default ""
+            help
+                Gateway address. Example: 192.168.1.1
+
+        config BRIDGE_STATIC_MASK
+            string "Netmask"
+            default "255.255.255.0"
+
+        config BRIDGE_HOSTNAME
+            string "mDNS hostname"
+            default "uart-bridge"
+            help
+                The device will be reachable as <hostname>.local
+                via mDNS. Example: uart-bridge.local
+
+        config BRIDGE_STATIC_DNS
+            string "DNS server"
+            default ""
+            help
+                DNS server address. Example: 8.8.8.8
+    endmenu
+
+    menu "UART Settings"
+        config BRIDGE_UART_NUM
+            int "UART port number"
+            default 1
+            range 0 2
+
+        config BRIDGE_UART_BAUD_RATE
+            int "UART baud rate"
+            default 250000
+
+        config BRIDGE_UART_TX_GPIO
+            int "UART TX GPIO pin"
+            default 21
+
+        config BRIDGE_UART_RX_GPIO
+            int "UART RX GPIO pin"
+            default 20
+
+        config BRIDGE_UART_DATA_BITS
+            int "UART data bits (5-8)"
+            default 8
+            range 5 8
+
+        config BRIDGE_UART_PARITY
+            int "UART parity (0=none, 1=odd, 2=even)"
+            default 0
+            range 0 2
+
+        config BRIDGE_UART_STOP_BITS
+            int "UART stop bits (1=1bit, 2=1.5bits, 3=2bits)"
+            default 1
+            range 1 3
+
+        config BRIDGE_UART_RX_BUF_SIZE
+            int "UART RX ring buffer size (bytes)"
+            default 8192
+            range 1024 32768
+
+        config BRIDGE_UART_TX_BUF_SIZE
+            int "UART TX ring buffer size (bytes)"
+            default 8192
+            range 1024 32768
+    endmenu
+
+    menu "LED Indicator"
+        config BRIDGE_LED_GPIO
+            int "LED GPIO pin"
+            default 8
+
+        config BRIDGE_LED_ACTIVE_LOW
+            bool "LED is active-low"
+            default y
+            help
+                Most ESP32-C3 dev boards have an active-low LED on GPIO 8.
+    endmenu
+
+    menu "OTA Settings"
+        config BRIDGE_OTA_PORT
+            int "OTA HTTP server port"
+            default 80
+            range 1 65535
+
+        config BRIDGE_OTA_BUF_SIZE
+            int "OTA receive buffer size (bytes)"
+            default 4096
+            range 1024 16384
+    endmenu
+
+    menu "TCP Server Settings"
+        config BRIDGE_TCP_PORT
+            int "TCP server port"
+            default 3333
+            range 1 65535
+
+        config BRIDGE_TCP_RX_BUF_SIZE
+            int "TCP receive buffer size (bytes)"
+            default 4096
+            range 512 16384
+
+        config BRIDGE_TCP_ALLOWED_IP
+            string "Allowed client IP (empty = any)"
+            default ""
+            help
+                If set, only connections from this IP address will be accepted.
+                Leave empty to allow connections from any IP.
+    endmenu
+
+endmenu
